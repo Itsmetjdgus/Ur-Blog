@@ -120,3 +120,8 @@ footer {
   text-align: center;
   border-radius: 8px;
 }
+
+.form-message {
+  color: #b91c1c;
+  min-height: 1.2em;
+}
