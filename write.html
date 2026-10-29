@@ -13,16 +13,17 @@
     </header>
 
     <main>
-        <h2>New Post</h2>
-        <form class="write-form">
-            <label for="title">Title</label>
-            <input type="text" id="title" placeholder="Enter title">
+        <h2 id="write-heading">New Post</h2>
+       <form class="write-form">
+    <label for="title">Title</label>
+    <input type="text" id="title" placeholder="Enter title" maxlength="100">
 
-            <label for="content">Content</label>
-            <textarea id="content" rows="10" placeholder="Write your post"></textarea>
+    <label for="content">Content</label>
+    <textarea id="content" rows="10" placeholder="Write your post" maxlength="20000"></textarea>
 
-            <button type="button">Publish</button>
-        </form>
+    <button type="button" id="publish-btn">Publish</button>
+    <p id="write-message" class="form-message"></p>
+</form>
     </main>
 
     <footer>
@@ -32,6 +33,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
     <script src="nav.js"></script>
+    <script src="write.js"></script>
     
 </body>
 </html>
