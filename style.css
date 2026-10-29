@@ -154,3 +154,15 @@ footer {
 .post-actions .danger {
   background-color: #b91c1c;
 }
+
+[hidden] {
+  display: none !important;
+}
+
+.form-message.ok {
+  color: #166534;
+}
+
+.date a {
+  color: var(--link-color);
+}

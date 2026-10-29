@@ -3,7 +3,7 @@ async function loadPosts() {
 
   const { data, error } = await db
     .from('posts')
-    .select('id, title, content, created_at')
+    .select('id, title, content, author_id, created_at, profiles(nickname)')
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -14,28 +14,12 @@ async function loadPosts() {
 
   list.innerHTML = '';
 
-  data.forEach((post) => {
-    const article = document.createElement('article');
-    article.className = 'post';
+  if (data.length === 0) {
+    list.textContent = 'No posts yet.';
+    return;
+  }
 
-    const link = document.createElement('a');
-    link.className = 'post-link';
-    link.href = 'post.html?id=' + post.id;
-
-    const h2 = document.createElement('h2');
-    h2.textContent = post.title;
-
-    const date = document.createElement('p');
-    date.className = 'date';
-    date.textContent = new Date(post.created_at).toLocaleDateString('ko-KR');
-
-    const preview = document.createElement('p');
-    preview.textContent = post.content.slice(0, 100);
-
-    link.append(h2, date, preview);
-    article.append(link);
-    list.append(article);
-  });
+  data.forEach((post) => list.append(renderPostCard(post, true)));
 }
 
 loadPosts();

@@ -9,7 +9,7 @@
 
   const { data: post, error } = await db
     .from('posts')
-    .select('id, title, content, author_id, created_at')
+    .select('id, title, content, author_id, created_at, profiles(nickname)')
     .eq('id', id)
     .maybeSingle();
 
@@ -34,11 +34,23 @@
   date.className = 'date';
   date.textContent = new Date(post.created_at).toLocaleDateString('ko-KR');
 
+    const author = document.createElement('p');
+  author.className = 'date';
+  author.append('by ');
+  if (post.author_id && post.profiles) {
+    const authorLink = document.createElement('a');
+    authorLink.href = 'author.html?id=' + post.author_id;
+    authorLink.textContent = post.profiles.nickname;
+    author.append(authorLink);
+  } else {
+    author.append('Anonymous');
+  }
+
   const body = document.createElement('p');
   body.className = 'post-content';
   body.textContent = post.content;
 
-  article.append(h2, date, body);
+  article.append(h2, date, author, body);
 
   if (isOwner) {
     const actions = document.createElement('div');

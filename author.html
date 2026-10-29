@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Ur Blog</h1>
+        <nav id="main-nav"></nav>
+    </header>
+
+    <main>
+        <section id="author-header">
+            <p>Loading...</p>
+        </section>
+
+        <form class="write-form" id="nickname-form" hidden>
+            <label for="nickname">Nickname (2-20 characters)</label>
+            <input type="text" id="nickname" maxlength="20">
+            <button type="button" id="nickname-btn">Save nickname</button>
+            <p id="nickname-message" class="form-message"></p>
+        </form>
+
+        <div id="author-posts"></div>
+    </main>
+
+    <footer>
+        <p>Ur Blog</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="nav.js"></script>
+    <script src="render.js"></script>
+    <script src="author.js"></script>
+</body>
+</html>
