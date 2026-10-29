@@ -76,10 +76,6 @@ footer {
     gap: 8px;
     padding: 16px;
   }
-  header a {
-    margin-left: 0;
-    margin-right: 16px;
-  }
 }
 
 .write-form {
@@ -165,4 +161,21 @@ footer {
 
 .date a {
   color: var(--link-color);
+}
+
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.write-form input,
+.write-form textarea {
+  font-size: 16px;
 }
