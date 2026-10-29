@@ -9,11 +9,16 @@
 
   const titleInput = document.getElementById('title');
   const contentInput = document.getElementById('content');
+  const imageInput = document.getElementById('image');
   const button = document.getElementById('publish-btn');
   const message = document.getElementById('write-message');
   const heading = document.getElementById('write-heading');
 
+  const MAX_SIZE = 2 * 1024 * 1024;
+  const TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
+
   const editId = Number(new URLSearchParams(window.location.search).get('id')) || null;
+  let oldImagePath = null;
 
   if (editId) {
     heading.textContent = 'Edit Post';
@@ -21,7 +26,7 @@
 
     const { data: post, error } = await db
       .from('posts')
-      .select('id, title, content, author_id')
+      .select('id, title, content, author_id, image_path')
       .eq('id', editId)
       .maybeSingle();
 
@@ -33,6 +38,7 @@
 
     titleInput.value = post.title;
     contentInput.value = post.content;
+    oldImagePath = post.image_path;
   }
 
   button.addEventListener('click', async () => {
@@ -44,21 +50,53 @@
       return;
     }
 
+    const file = imageInput.files[0];
+    if (file) {
+      if (!TYPES[file.type]) {
+        message.textContent = 'Only JPG, PNG, and WEBP images are allowed.';
+        return;
+      }
+      if (file.size > MAX_SIZE) {
+        message.textContent = 'Image must be 2MB or smaller.';
+        return;
+      }
+    }
+
     button.disabled = true;
     message.textContent = 'Saving...';
+
+    let newImagePath = null;
+    if (file) {
+      newImagePath =
+        session.user.id + '/' + Date.now() + '-' +
+        Math.random().toString(36).slice(2, 8) + '.' + TYPES[file.type];
+
+      const { error: uploadError } = await db.storage
+        .from('post-images')
+        .upload(newImagePath, file, { contentType: file.type });
+
+      if (uploadError) {
+        message.textContent = 'Image upload failed: ' + uploadError.message;
+        button.disabled = false;
+        return;
+      }
+    }
+
+    const fields = { title, content };
+    if (newImagePath) fields.image_path = newImagePath;
 
     let result;
     if (editId) {
       result = await db
         .from('posts')
-        .update({ title, content })
+        .update(fields)
         .eq('id', editId)
         .select('id')
         .maybeSingle();
     } else {
       result = await db
         .from('posts')
-        .insert({ title, content })
+        .insert(fields)
         .select('id')
         .single();
     }
@@ -66,9 +104,16 @@
     const { data: saved, error } = result;
 
     if (error || !saved) {
+      if (newImagePath) {
+        await db.storage.from('post-images').remove([newImagePath]);
+      }
       message.textContent = 'Failed to save.' + (error ? ' ' + error.message : '');
       button.disabled = false;
       return;
+    }
+
+    if (editId && newImagePath && oldImagePath) {
+      await db.storage.from('post-images').remove([oldImagePath]);
     }
 
     window.location.href = 'post.html?id=' + saved.id;

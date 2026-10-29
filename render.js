@@ -1,3 +1,7 @@
+function getImageUrl(path) {
+  return db.storage.from('post-images').getPublicUrl(path).data.publicUrl;
+}
+
 function renderPostCard(post, showAuthor) {
   const article = document.createElement('article');
   article.className = 'post';
@@ -21,6 +25,13 @@ function renderPostCard(post, showAuthor) {
   const preview = document.createElement('p');
   preview.textContent = post.content.slice(0, 100);
 
+  if (post.image_path) {
+    const img = document.createElement('img');
+    img.src = getImageUrl(post.image_path);
+    img.alt = post.title;
+    img.className = 'post-thumb';
+    link.append(img);
+  }
   link.append(h2, date, preview);
   article.append(link);
   return article;

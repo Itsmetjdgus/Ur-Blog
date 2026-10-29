@@ -9,7 +9,7 @@
 
   const { data: post, error } = await db
     .from('posts')
-    .select('id, title, content, author_id, created_at, profiles(nickname)')
+    .select('id, title, content, author_id, created_at, image_path, profiles(nickname)')
     .eq('id', id)
     .maybeSingle();
 
@@ -50,7 +50,17 @@
   body.className = 'post-content';
   body.textContent = post.content;
 
-  article.append(h2, date, author, body);
+  article.append(h2, date, author);
+
+  if (post.image_path) {
+    const img = document.createElement('img');
+    img.src = getImageUrl(post.image_path);
+    img.alt = post.title;
+    img.className = 'post-image';
+    article.append(img);
+  }
+
+  article.append(body);
 
   if (isOwner) {
     const actions = document.createElement('div');
@@ -79,6 +89,10 @@
         alert('Failed to delete the post.');
         deleteBtn.disabled = false;
         return;
+      }
+      
+       if (post.image_path) {
+        await db.storage.from('post-images').remove([post.image_path]);
       }
 
       window.location.href = 'blog.html';

@@ -3,7 +3,7 @@ async function loadPosts() {
 
   const { data, error } = await db
     .from('posts')
-    .select('id, title, content, author_id, created_at, profiles(nickname)')
+    .select('id, title, content, author_id, created_at, image_path, profiles(nickname)')
     .order('created_at', { ascending: false });
 
   if (error) {
