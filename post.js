@@ -57,6 +57,7 @@
     img.src = getImageUrl(post.image_path);
     img.alt = post.title;
     img.className = 'post-image';
+    img.loading = 'lazy';
     article.append(img);
   }
 

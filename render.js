@@ -30,6 +30,7 @@ function renderPostCard(post, showAuthor) {
     img.src = getImageUrl(post.image_path);
     img.alt = post.title;
     img.className = 'post-thumb';
+    img.loading = 'lazy';
     link.append(img);
   }
   link.append(h2, date, preview);

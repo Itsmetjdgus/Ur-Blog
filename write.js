@@ -14,7 +14,7 @@
   const message = document.getElementById('write-message');
   const heading = document.getElementById('write-heading');
 
-  const MAX_SIZE = 2 * 1024 * 1024;
+  const MAX_INPUT_SIZE = 15 * 1024 * 1024;
   const TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
 
   const editId = Number(new URLSearchParams(window.location.search).get('id')) || null;
@@ -56,8 +56,8 @@
         message.textContent = 'Only JPG, PNG, and WEBP images are allowed.';
         return;
       }
-      if (file.size > MAX_SIZE) {
-        message.textContent = 'Image must be 2MB or smaller.';
+      if (file.size > MAX_INPUT_SIZE) {
+        message.textContent = 'Image must be 15MB or smaller.';
         return;
       }
     }
@@ -65,15 +65,30 @@
     button.disabled = true;
     message.textContent = 'Saving...';
 
-    let newImagePath = null;
+     let newImagePath = null;
     if (file) {
+      message.textContent = 'Processing image...';
+
+      let resized;
+      try {
+        resized = await resizeImage(file, 1600, 0.85);
+      } catch (e) {
+        resized = null;
+      }
+
+      if (!resized) {
+        message.textContent = 'Could not process this image. Try another one.';
+        button.disabled = false;
+        return;
+      }
+
       newImagePath =
         session.user.id + '/' + Date.now() + '-' +
-        Math.random().toString(36).slice(2, 8) + '.' + TYPES[file.type];
+        Math.random().toString(36).slice(2, 8) + '.jpg';
 
       const { error: uploadError } = await db.storage
         .from('post-images')
-        .upload(newImagePath, file, { contentType: file.type });
+        .upload(newImagePath, resized, { contentType: 'image/jpeg' });
 
       if (uploadError) {
         message.textContent = 'Image upload failed: ' + uploadError.message;
