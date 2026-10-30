@@ -212,3 +212,7 @@ $$;
 create trigger limit_comment_rate_trigger
   before insert on public.comments
   for each row execute function public.limit_comment_rate();
+
+  -- 2026-10-30: block '@' in nicknames (avoid exposing email addresses)
+alter table profiles
+  add constraint profiles_nickname_no_at check (nickname !~ '@');
