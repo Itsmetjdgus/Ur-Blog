@@ -3,6 +3,11 @@ const passwordInput = document.getElementById('password');
 const message = document.getElementById('auth-message');
 
 document.getElementById('signup-btn').addEventListener('click', async () => {
+  if (passwordInput.value.length < 8) {
+    message.textContent = 'Password must be at least 8 characters.';
+    return;
+  }
+
   message.textContent = 'Signing up...';
 
   const { data, error } = await db.auth.signUp({
