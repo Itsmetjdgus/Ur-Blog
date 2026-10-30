@@ -20,6 +20,7 @@ body {
 header {
   position: sticky;
   top: 0;
+  z-index: 10;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,7 +31,6 @@ header {
 
 header a {
   color: var(--header-text);
-  margin-left: 16px;
   text-decoration: none;
 }
 
@@ -93,6 +93,7 @@ footer {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-family: inherit;
+  font-size: 16px;
 }
 
 .write-form button {
@@ -192,4 +193,44 @@ header {
   max-width: 100%;
   border-radius: 6px;
   margin: 12px 0;
+}
+
+.comments {
+  margin-top: 24px;
+}
+
+.comment {
+  background-color: white;
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.comment-meta {
+  color: gray;
+  font-size: 14px;
+  margin: 0 0 6px;
+}
+
+.comment-meta a {
+  color: var(--link-color);
+}
+
+.comment-form {
+  margin-top: 16px;
+}
+
+.link-danger {
+  background: none;
+  border: none;
+  color: #b91c1c;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+}
+
+.state-message {
+  color: gray;
+  text-align: center;
+  padding: 16px;
 }
