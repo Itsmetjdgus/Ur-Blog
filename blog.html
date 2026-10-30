@@ -12,9 +12,18 @@
         <nav id="main-nav"></nav>
     </header>
 
-   <main id="post-list">
-    <p>Loading...</p>
-   </main>
+   <main>
+        <form class="search-form" action="blog.html" method="get">
+            <input type="search" id="search-input" name="q" maxlength="50" placeholder="Search posts">
+            <button type="submit">Search</button>
+        </form>
+
+        <div id="post-list">
+            <p>Loading...</p>
+        </div>
+
+        <div id="pager" class="pager"></div>
+    </main>
 
   <footer>
     <p>Ur Blog</p>
