@@ -1,8 +1,16 @@
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
+const agreeInput = document.getElementById('agree');
 const message = document.getElementById('auth-message');
 
+const TERMS_VERSION = '2026-11-01';
+
 document.getElementById('signup-btn').addEventListener('click', async () => {
+  if (!agreeInput.checked) {
+    message.textContent = 'Please confirm you are 14 or older and agree to the Terms and Privacy Policy.';
+    return;
+  }
+
   if (passwordInput.value.length < 8) {
     message.textContent = 'Password must be at least 8 characters.';
     return;
@@ -13,6 +21,7 @@ document.getElementById('signup-btn').addEventListener('click', async () => {
   const { data, error } = await db.auth.signUp({
     email: emailInput.value.trim(),
     password: passwordInput.value,
+    options: { data: { terms_version: TERMS_VERSION } },
   });
 
   if (error) {

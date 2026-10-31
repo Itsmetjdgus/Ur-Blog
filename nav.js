@@ -40,3 +40,27 @@ async function renderNav() {
 }
 
 renderNav();
+
+function renderFooter() {
+  const footer = document.querySelector('footer');
+  if (!footer) return;
+
+  const links = document.createElement('p');
+  links.className = 'footer-links';
+
+  [
+    { text: 'Terms', href: 'terms.html' },
+    { text: 'Privacy', href: 'privacy.html' },
+    { text: 'Report', href: 'report.html' },
+  ].forEach((item, index) => {
+    if (index > 0) links.append(' · ');
+    const a = document.createElement('a');
+    a.href = item.href;
+    a.textContent = item.text;
+    links.append(a);
+  });
+
+  footer.append(links);
+}
+
+renderFooter();
