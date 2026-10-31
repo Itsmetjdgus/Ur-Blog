@@ -216,3 +216,69 @@ create trigger limit_comment_rate_trigger
   -- 2026-10-30: block '@' in nicknames (avoid exposing email addresses)
 alter table profiles
   add constraint profiles_nickname_no_at check (nickname !~ '@');
+
+  -- 2026-11-01: reports and account deletion
+
+create table reports (
+  id bigint generated always as identity primary key,
+  reporter_id uuid not null default auth.uid() references profiles(id) on delete cascade,
+  target_type text not null check (target_type in ('post', 'comment')),
+  target_id bigint not null,
+  reason text not null check (reason in ('spam', 'harassment', 'privacy', 'illegal', 'other')),
+  details text check (details is null or char_length(details) <= 500),
+  status text not null default 'open' check (status in ('open', 'resolved', 'dismissed')),
+  created_at timestamptz not null default now(),
+  unique (reporter_id, target_type, target_id)
+);
+
+alter table reports enable row level security;
+
+create policy "users can create reports"
+  on reports for insert to authenticated
+  with check (auth.uid() = reporter_id and status = 'open');
+
+create or replace function public.prepare_report()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  new.created_at := now();
+
+  if (
+    select count(*) from public.reports
+    where reporter_id = new.reporter_id
+      and created_at > now() - interval '10 minutes'
+  ) >= 5 then
+    raise exception 'Too many reports. Please wait a moment.';
+  end if;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists prepare_report_trigger on public.reports;
+
+create trigger prepare_report_trigger
+  before insert on public.reports
+  for each row execute function public.prepare_report();
+
+create or replace function public.delete_my_account()
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if auth.uid() is null then
+    raise exception 'Not authenticated';
+  end if;
+
+  delete from public.posts where author_id = auth.uid();
+  delete from auth.users where id = auth.uid();
+end;
+$$;
+
+revoke all on function public.delete_my_account() from public, anon;
+grant execute on function public.delete_my_account() to authenticated;
