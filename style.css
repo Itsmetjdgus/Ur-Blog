@@ -300,3 +300,51 @@ header {
   padding: 0;
   margin-top: 3px;
 }
+
+.report-box {
+  margin-top: 8px;
+}
+
+.report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  max-width: 420px;
+}
+
+.report-form select,
+.report-form textarea {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.report-form button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--link-color);
+  color: white;
+  cursor: pointer;
+}
+
+#danger-zone input {
+  display: block;
+  margin: 8px 0;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.danger-btn {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 4px;
+  background-color: #b91c1c;
+  color: white;
+  cursor: pointer;
+}

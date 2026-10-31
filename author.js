@@ -69,6 +69,60 @@
       message.className = 'form-message ok';
       message.textContent = 'Saved.';
     });
+
+    const danger = document.getElementById('danger-zone');
+    const deleteBtn = document.getElementById('delete-account-btn');
+    const deleteConfirm = document.getElementById('delete-confirm');
+    const deleteMessage = document.getElementById('delete-message');
+
+    danger.hidden = false;
+
+    deleteBtn.addEventListener('click', async () => {
+      if (deleteConfirm.value !== 'DELETE') {
+        deleteMessage.textContent = 'Type DELETE to confirm.';
+        return;
+      }
+
+      if (!confirm('Delete your account permanently?')) return;
+
+      deleteBtn.disabled = true;
+      deleteMessage.textContent = 'Deleting...';
+
+      const { data: myPosts, error: postsError } = await db
+        .from('posts')
+        .select('image_path')
+        .eq('author_id', session.user.id)
+        .not('image_path', 'is', null);
+
+      if (postsError) {
+        deleteMessage.textContent = 'Failed to delete the account.';
+        deleteBtn.disabled = false;
+        return;
+      }
+
+      const paths = myPosts.map((p) => p.image_path);
+      if (paths.length > 0) {
+        const { error: removeError } = await db.storage.from('post-images').remove(paths);
+        if (removeError) {
+          deleteMessage.textContent = 'Failed to delete images.';
+          deleteBtn.disabled = false;
+          return;
+        }
+      }
+
+      const { error: rpcError } = await db.rpc('delete_my_account');
+      if (rpcError) {
+        deleteMessage.textContent = 'Failed to delete the account.';
+        deleteBtn.disabled = false;
+        return;
+      }
+
+      try {
+        await db.auth.signOut();
+      } catch (e) {}
+
+      window.location.href = 'index.html';
+    });
   }
 
   const { data: posts, error: postsError } = await db

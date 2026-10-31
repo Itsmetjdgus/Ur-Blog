@@ -92,6 +92,10 @@
       box.append(del);
     }
 
+    if (me && me !== comment.author_id) {
+      box.append(createReportControl('comment', comment.id));
+    }
+
     return box;
   }
 

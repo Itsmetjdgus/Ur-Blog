@@ -103,6 +103,10 @@
     article.append(actions);
   }
 
+   if (session && !isOwner) {
+    article.append(createReportControl('post', post.id));
+  }
+
   const back = document.createElement('a');
   back.href = 'blog.html';
   back.textContent = 'Back to list';
