@@ -6,7 +6,7 @@ async function renderNav() {
   const loggedIn = !!data.session;
 
   const links = [
-    { text: 'About', href: 'index.html' },
+    { text: 'Home', href: 'index.html' },
     { text: 'Posts', href: 'blog.html' },
   ];
 

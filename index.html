@@ -3,25 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Page</title>
+    <meta name="theme-color" content="#66FFCC">
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <title>Ur Blog</title>
+    <meta name="description" content="Write about your day or what's on your mind, with words or a photo. Readers can respond in the comments.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Ur Blog">
+    <meta property="og:description" content="Write about your day or what's on your mind, with words or a photo. Readers can respond in the comments.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-  <h1>Sunghyun Kim</h1>
-  <nav id="main-nav"></nav>
-</header>
-    <p>Hello. I am learning web development.</p>
-    <h2>I am interesting in making a website and reading books</h2>
-    <u1>
-        <li>Coding</li>
-        <li>Making a blogging service</li>
-    </u1>
-    <a href="https://github.com/Itsmetjdgus">Github</a>
+        <h1>Ur Blog</h1>
+        <nav id="main-nav"></nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <p class="badge">Beta</p>
+            <h2>A place for the things you rarely say.</h2>
+            <p class="hero-sub">Write about your day or what's on your mind, with words or a photo. Readers can respond in the comments.</p>
+            <div class="hero-actions">
+                <a class="btn" href="blog.html">Read posts</a>
+                <a class="btn btn-secondary" id="cta-write" href="login.html">Start writing</a>
+            </div>
+        </section>
+
+        <section>
+            <h3>What you can do</h3>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h4>Write</h4>
+                    <p>Publish posts with an optional cover photo.</p>
+                </div>
+                <div class="feature">
+                    <h4>Read</h4>
+                    <p>Browse and search posts from other writers.</p>
+                </div>
+                <div class="feature">
+                    <h4>Talk</h4>
+                    <p>Comment on posts and follow the conversation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3>Latest posts</h3>
+            <div id="latest-posts">
+                <p class="state-message">Loading...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Ur Blog</p>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
     <script src="nav.js"></script>
-    
+    <script src="render.js"></script>
+    <script src="home.js"></script>
 </body>
 </html>
