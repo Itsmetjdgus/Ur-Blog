@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset password</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Ur Blog</h1>
+        <nav id="main-nav"></nav>
+    </header>
+
+    <main>
+        <h2>Reset password</h2>
+        <p id="reset-info" class="state-message">Checking your reset link...</p>
+
+        <form class="write-form" id="reset-form" hidden>
+            <label for="new-password">New password</label>
+            <input type="password" id="new-password" placeholder="At least 8 characters" autocomplete="new-password">
+
+            <label for="confirm-password">Confirm new password</label>
+            <input type="password" id="confirm-password" autocomplete="new-password">
+
+            <button type="button" id="reset-btn">Update password</button>
+            <p id="reset-message" class="form-message"></p>
+        </form>
+    </main>
+
+    <footer>
+        <p>Ur Blog</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="nav.js"></script>
+    <script src="reset.js"></script>
+</body>
+</html>

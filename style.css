@@ -348,3 +348,12 @@ header {
   color: white;
   cursor: pointer;
 }
+
+.auth-links {
+  margin: 0;
+}
+
+.auth-links a {
+  color: var(--link-color);
+  font-size: 14px;
+}
