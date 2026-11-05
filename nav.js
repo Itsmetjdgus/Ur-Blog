@@ -52,6 +52,7 @@ function renderFooter() {
     { text: 'Terms', href: 'terms.html' },
     { text: 'Privacy', href: 'privacy.html' },
     { text: 'Report', href: 'report.html' },
+    { text: 'Help', href: 'help.html' },
   ].forEach((item, index) => {
     if (index > 0) links.append(' · ');
     const a = document.createElement('a');

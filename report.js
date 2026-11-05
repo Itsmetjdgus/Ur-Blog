@@ -17,6 +17,7 @@ function createReportControl(targetType, targetId) {
     ['harassment', 'Harassment or hate'],
     ['privacy', 'Privacy violation'],
     ['illegal', 'Illegal content'],
+    ['self_harm', 'Self-harm or suicide concern'],
     ['other', 'Other'],
   ].forEach(([value, label]) => {
     const option = document.createElement('option');
@@ -66,10 +67,19 @@ function createReportControl(targetType, targetId) {
       return;
     }
 
-    message.className = 'form-message ok';
+     message.className = 'form-message ok';
     message.textContent = 'Thank you. We will review it.';
+
+    if (select.value === 'self_harm') {
+      message.append(' If someone may be in immediate danger, contact local emergency services now. ');
+      const helpLink = document.createElement('a');
+      helpLink.href = 'help.html';
+      helpLink.textContent = 'See Help.';
+      message.append(helpLink);
+    }
+
     details.value = '';
-  });
+  });                                              
 
   form.append(select, details, submit, message);
   wrapper.append(toggle, form);

@@ -282,3 +282,11 @@ $$;
 
 revoke all on function public.delete_my_account() from public, anon;
 grant execute on function public.delete_my_account() to authenticated;
+
+-- 2026-11-05: add 'self_harm' to report reasons
+
+alter table reports drop constraint if exists reports_reason_check;
+
+alter table reports
+  add constraint reports_reason_check
+  check (reason in ('spam', 'harassment', 'privacy', 'illegal', 'self_harm', 'other'));
