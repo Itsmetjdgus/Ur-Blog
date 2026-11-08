@@ -61,7 +61,11 @@
 
       if (updateError || !updated) {
         message.className = 'form-message';
-        message.textContent = 'Failed to save nickname.';
+        if (updateError && updateError.code === '23505') {
+          message.textContent = 'That nickname is already taken.';
+        } else {
+          message.textContent = 'Failed to save nickname.';
+        }
         return;
       }
 

@@ -290,3 +290,219 @@ alter table reports drop constraint if exists reports_reason_check;
 alter table reports
   add constraint reports_reason_check
   check (reason in ('spam', 'harassment', 'privacy', 'illegal', 'self_harm', 'other'));
+
+-- 2026-11-08: F1 follow, private account, block
+
+-- 1. profiles: account privacy
+alter table profiles add column if not exists is_private boolean not null default false;
+
+-- 2. unique nickname (case-insensitive)
+create unique index if not exists profiles_nickname_lower_idx on profiles (lower(nickname));
+
+-- 3. blocks
+create table if not exists blocks (
+  blocker_id uuid not null default auth.uid() references profiles(id) on delete cascade,
+  blocked_id uuid not null references profiles(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (blocker_id, blocked_id),
+  check (blocker_id <> blocked_id)
+);
+
+alter table blocks enable row level security;
+
+create policy "blocker can read own blocks"
+  on blocks for select to authenticated
+  using (auth.uid() = blocker_id);
+
+create policy "users can create own blocks"
+  on blocks for insert to authenticated
+  with check (auth.uid() = blocker_id);
+
+create policy "blocker can delete own blocks"
+  on blocks for delete to authenticated
+  using (auth.uid() = blocker_id);
+
+-- 4. follows
+create table if not exists follows (
+  follower_id uuid not null default auth.uid() references profiles(id) on delete cascade,
+  following_id uuid not null references profiles(id) on delete cascade,
+  status text not null default 'pending' check (status in ('pending', 'accepted')),
+  created_at timestamptz not null default now(),
+  primary key (follower_id, following_id),
+  check (follower_id <> following_id)
+);
+
+create index if not exists follows_following_idx on follows (following_id, status);
+
+alter table follows enable row level security;
+
+create policy "parties can read follows"
+  on follows for select to authenticated
+  using (auth.uid() = follower_id or auth.uid() = following_id);
+
+create policy "users can create own follows"
+  on follows for insert to authenticated
+  with check (auth.uid() = follower_id);
+
+create policy "followed user can update follows"
+  on follows for update to authenticated
+  using (auth.uid() = following_id)
+  with check (auth.uid() = following_id);
+
+create policy "parties can delete follows"
+  on follows for delete to authenticated
+  using (auth.uid() = follower_id or auth.uid() = following_id);
+
+-- 5. follow triggers
+create or replace function public.prepare_follow()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  target_private boolean;
+begin
+  if exists (
+    select 1 from public.blocks b
+    where b.blocker_id = new.following_id and b.blocked_id = new.follower_id
+  ) then
+    raise exception 'Unable to follow this user.';
+  end if;
+
+  select is_private into target_private
+  from public.profiles where id = new.following_id;
+
+  new.status := case when coalesce(target_private, true) then 'pending' else 'accepted' end;
+  new.created_at := now();
+
+  if (
+    select count(*) from public.follows
+    where follower_id = new.follower_id
+      and created_at > now() - interval '10 minutes'
+  ) >= 30 then
+    raise exception 'Too many follow actions. Please wait a moment.';
+  end if;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists prepare_follow_trigger on public.follows;
+
+create trigger prepare_follow_trigger
+  before insert on public.follows
+  for each row execute function public.prepare_follow();
+
+create or replace function public.protect_follow_columns()
+returns trigger
+language plpgsql
+set search_path = ''
+as $$
+begin
+  new.follower_id := old.follower_id;
+  new.following_id := old.following_id;
+  new.created_at := old.created_at;
+  return new;
+end;
+$$;
+
+drop trigger if exists protect_follow_columns_trigger on public.follows;
+
+create trigger protect_follow_columns_trigger
+  before update on public.follows
+  for each row execute function public.protect_follow_columns();
+
+-- 6. privacy change and block triggers
+create or replace function public.handle_privacy_change()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if old.is_private and not new.is_private then
+    update public.follows
+    set status = 'accepted'
+    where following_id = new.id and status = 'pending';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists on_profile_privacy_change on public.profiles;
+
+create trigger on_profile_privacy_change
+  after update of is_private on public.profiles
+  for each row execute function public.handle_privacy_change();
+
+create or replace function public.handle_block_created()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  delete from public.follows
+  where (follower_id = new.blocker_id and following_id = new.blocked_id)
+     or (follower_id = new.blocked_id and following_id = new.blocker_id);
+  return new;
+end;
+$$;
+
+drop trigger if exists on_block_created on public.blocks;
+
+create trigger on_block_created
+  after insert on public.blocks
+  for each row execute function public.handle_block_created();
+
+-- 7. who can view an author's content
+create or replace function public.can_view_author(author uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select coalesce(
+    auth.uid() = author
+    or (
+      not exists (
+        select 1 from public.blocks b
+        where b.blocker_id = author and b.blocked_id = auth.uid()
+      )
+      and (
+        exists (select 1 from public.profiles p where p.id = author and not p.is_private)
+        or exists (
+          select 1 from public.follows f
+          where f.following_id = author
+            and f.follower_id = auth.uid()
+            and f.status = 'accepted'
+        )
+      )
+    ),
+    false
+  );
+$$;
+
+-- 8. read rules now follow account privacy
+drop policy if exists "anyone can read posts" on posts;
+
+create policy "read posts of viewable authors"
+  on posts for select
+  using (public.can_view_author(author_id));
+
+drop policy if exists "anyone can read comments" on comments;
+
+create policy "read comments of viewable posts"
+  on comments for select
+  using (exists (select 1 from posts p where p.id = comments.post_id));
+
+drop policy if exists "users can add own comments" on comments;
+
+create policy "users can add own comments on viewable posts"
+  on comments for insert to authenticated
+  with check (
+    auth.uid() = author_id
+    and exists (select 1 from posts p where p.id = comments.post_id)
+  );
