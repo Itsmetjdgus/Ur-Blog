@@ -505,3 +505,69 @@ header {
   color: white;
   cursor: pointer;
 }
+
+.follow-area {
+  margin: 8px 0 24px;
+}
+
+.follow-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.follow-btn {
+  display: inline-block;
+  padding: 8px 18px;
+  border: 1px solid var(--link-color);
+  border-radius: 999px;
+  background-color: var(--link-color);
+  color: #fff;
+  font-size: 15px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.follow-btn.secondary {
+  background-color: transparent;
+  color: var(--link-color);
+}
+
+.follow-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.follow-note {
+  color: var(--text-gray);
+  font-size: 14px;
+}
+
+.account-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border: 1px solid var(--accent, #b98a4a);
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--text-gray);
+}
+
+.private-notice {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px dashed var(--accent, #b98a4a);
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.private-notice strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.private-notice p {
+  margin: 0;
+  color: var(--text-gray);
+}
