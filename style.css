@@ -472,3 +472,36 @@ header {
   background-color: var(--header-text);
   color: var(--main-color);
 }
+
+.option {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.option input {
+  margin-top: 4px;
+}
+
+.option span {
+  line-height: 1.5;
+}
+
+.option strong {
+  display: block;
+}
+
+#privacy-options button {
+  margin-top: 8px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--link-color);
+  color: white;
+  cursor: pointer;
+}

@@ -13,6 +13,7 @@ async function renderNav() {
    if (loggedIn) {
     links.push({ text: 'Write', href: 'write.html' });
     links.push({ text: 'My Blog', href: 'author.html?id=' + data.session.user.id });
+    links.push({ text: 'Settings', href: 'settings.html' });
   } else {
     links.push({ text: 'Login', href: 'login.html' });
   }
