@@ -5,7 +5,7 @@ A place for the things you rarely say. Write about your day or what's on your mi
 Status: in development.
 
 ## Live
-- https://itsmetjdgus.github.io/Ur-Blog/
+- https://itsmetjdgus.github.io/tidnote/
 
 ## Features
 - Sign up, log in, and password reset

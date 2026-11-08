@@ -3,7 +3,7 @@ const passwordInput = document.getElementById('password');
 const agreeInput = document.getElementById('agree');
 const message = document.getElementById('auth-message');
 
-const TERMS_VERSION = '2026-11-01';
+const TERMS_VERSION = '2027-01-01';
 
 document.getElementById('signup-btn').addEventListener('click', async () => {
   if (!agreeInput.checked) {

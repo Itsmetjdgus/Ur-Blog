@@ -3,11 +3,12 @@
 }
 
 :root {
-  --main-color: #66FFCC;
-  --header-text: #1a1a1a;
-  --bg-color: #f5f5f5;
+  --main-color: #f3e7cc;
+  --header-text: #1f3552;
+  --bg-color: #faf6ec;
   --text-gray: #595959;
-  --link-color: #0f766e;
+  --link-color: #1f3552;
+  --accent: #b98a4a;
 }
 /* 태그 선택자: 모든 body */
 body {
@@ -435,7 +436,7 @@ button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 3px solid #0f766e;
+  outline: 3px solid #1f3552;
   outline-offset: 2px;
 }
 
@@ -461,4 +462,13 @@ header h1 {
 .brand img {
   display: block;
   border-radius: 8px;
+}
+
+header {
+  border-bottom: 3px solid var(--accent);
+}
+
+.badge {
+  background-color: var(--header-text);
+  color: var(--main-color);
 }
