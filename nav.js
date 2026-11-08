@@ -65,3 +65,27 @@ function renderFooter() {
 }
 
 renderFooter();
+
+function renderBrand() {
+  const h1 = document.querySelector('header h1');
+  if (!h1) return;
+
+  const link = document.createElement('a');
+  link.href = 'index.html';
+  link.className = 'brand';
+
+  const img = document.createElement('img');
+  img.src = 'logo-96.png';
+  img.alt = '';
+  img.width = 36;
+  img.height = 36;
+
+  const name = document.createElement('span');
+  name.textContent = 'Tidnote';
+
+  link.append(img, name);
+  h1.textContent = '';
+  h1.append(link);
+}
+
+renderBrand();

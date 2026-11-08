@@ -1,25 +1,28 @@
-# Ur Blog
+# Tidnote
 
-A personal blog website built while learning web development.
+A place for the things you rarely say. Write about your day or what's on your mind, with words or a photo.
+
+Status: in development.
 
 ## Live
 - https://itsmetjdgus.github.io/Ur-Blog/
 
+## Features
+- Sign up, log in, and password reset
+- Write, edit, and delete posts with an optional cover photo
+- Post list with search and pagination
+- Comments, nicknames, and user blog pages
+- Reporting, account deletion, and a help page with crisis resources
+
 ## Tech
-- HTML, CSS (flexbox, grid, responsive design)
-- JavaScript
-- Git / GitHub, GitHub Pages
-- Database & Auth: Supabase
+- HTML, CSS, vanilla JavaScript
+- Supabase (Auth, Postgres with Row Level Security, Storage)
+- GitHub Pages
 
-## Pages
-- index.html: About
-- blog.html: Post list
-- write.html: Write form & Edit post
-- author.html: User blog post list
-- login.html: Login & Sign up
+## Security
+- Row Level Security on every table, so users can only change their own data
+- Database constraints and triggers (length limits, rate limits, timestamp protection)
+- No secret keys in this repository (only the public client key is used in the browser)
 
-## Security & Features
-- Supabase Authentication (Login / Signup)
-- Supabase RLS (Row Level Security) applied for post editing and profile protection
-- Database Constraints (Nickname length validation)
-- Mobile responsive layout
+## Database
+`schema.sql` contains the table, policy, trigger, and function definitions.

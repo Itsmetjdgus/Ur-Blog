@@ -1,4 +1,4 @@
--- Ur Blog database schema (recovery reference)
+-- Tidnote database schema (recovery reference)
 -- Run top to bottom on a NEW Supabase project (SQL Editor).
 -- Never put passwords, API keys, or personal data in this file.
 -- When you change the database later, append the new SQL at the bottom with a date.
