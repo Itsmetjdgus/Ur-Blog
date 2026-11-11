@@ -4,7 +4,7 @@
   const authorId = new URLSearchParams(window.location.search).get('id');
 
   if (!authorId) {
-    header.textContent = 'User not found.';
+   header.textContent = t('profile.not_found');
     return;
   }
 
@@ -15,16 +15,15 @@
     .maybeSingle();
 
   if (error || !profile) {
-    header.textContent = 'User not found.';
+    header.textContent = t('profile.not_found');
     return;
   }
 
-  document.title = profile.nickname + "'s Blog";
+    document.title = profile.nickname + ' - Tidnote';
 
-  const title = document.createElement('h2');
-  title.textContent = profile.nickname + "'s Blog";
   header.innerHTML = '';
-  header.append(title);
+  const postsHeading = document.getElementById('posts-heading');
+  postsHeading.textContent = t('profile.posts_of', { name: profile.nickname });
 
   const { data: sessionData } = await db.auth.getSession();
   const session = sessionData.session;
@@ -69,7 +68,8 @@
         return;
       }
 
-      title.textContent = updated.nickname + "'s Blog";
+            postsHeading.textContent = t('profile.posts_of', { name: updated.nickname });
+      document.dispatchEvent(new CustomEvent('nickname-changed', { detail: updated.nickname }));
       message.className = 'form-message ok';
       message.textContent = 'Saved.';
     });

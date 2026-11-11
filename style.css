@@ -571,3 +571,28 @@ header {
   margin: 0;
   color: var(--text-gray);
 }
+
+/* 24일차: 프로필 */
+.profile-header {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin: 1rem 0 1.5rem;
+}
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--header-text);
+  color: var(--main-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+.profile-name { margin: 0 0 0.25rem; }
+.profile-bio { margin: 0 0 0.5rem; color: var(--text-gray); }
+.posts-heading { margin: 1rem 0; }
+#bio-input { width: 100%; box-sizing: border-box; }
