@@ -51,7 +51,7 @@
   function hideEmptyMessages() {
     let tries = 0;
     const timer = setInterval(() => {
-      document.querySelectorAll('main p').forEach((p) => {
+            document.querySelectorAll('main p, #author-posts').forEach((p) => {
         if (EMPTY_TEXTS.includes(p.textContent.trim())) p.hidden = true;
       });
       tries += 1;
