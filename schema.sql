@@ -506,3 +506,11 @@ create policy "users can add own comments on viewable posts"
     auth.uid() = author_id
     and exists (select 1 from posts p where p.id = comments.post_id)
   );
+
+  -- ============================================
+-- 24일차: 프로필 소개글(bio)
+-- ============================================
+alter table profiles add column if not exists bio text not null default '';
+
+alter table profiles drop constraint if exists profiles_bio_length;
+alter table profiles add constraint profiles_bio_length check (char_length(bio) <= 100);
