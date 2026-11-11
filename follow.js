@@ -14,16 +14,16 @@
   let followStatus = null; // null, 'pending', 'accepted'
   let messageEl = null;
 
-  // 제목이 그려질 때까지 기다렸다가 제목 바로 아래에 영역을 붙입니다.
+  // 프로필 머리말이 그려질 때까지 기다렸다가 그 바로 아래에 영역을 붙입니다.
   let placeTries = 0;
   const placeTimer = setInterval(() => {
     placeTries += 1;
     const main = document.querySelector('main');
-    const heading = main && main.querySelector('h2, h1');
-    const headingReady = heading && heading.textContent.trim() !== '';
+    const ph = document.getElementById('profile-header');
+    const phReady = ph && ph.children.length > 0;
 
-    if (headingReady) {
-      if (heading.nextElementSibling !== area) heading.after(area);
+    if (phReady) {
+      if (ph.nextElementSibling !== area) ph.after(area);
     } else if (placeTries >= 30 && main && !area.isConnected) {
       main.prepend(area);
     }
