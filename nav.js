@@ -11,7 +11,7 @@ async function renderNav() {
     { text: 'People', href: 'people.html' },
   ];
 
-     if (loggedIn) {
+  if (loggedIn) {
     links.push({ text: 'Write', href: 'write.html' });
     links.push({ text: 'My Blog', href: 'author.html?id=' + data.session.user.id });
 
@@ -26,6 +26,8 @@ async function renderNav() {
 
     links.push({ text: 'Settings', href: 'settings.html' });
   } else {
+    links.push({ text: 'Login', href: 'login.html' });
+  }
 
   nav.innerHTML = '';
 
