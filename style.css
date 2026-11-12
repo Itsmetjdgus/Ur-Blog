@@ -647,3 +647,71 @@ header {
 }
 .profile-edit textarea { width: 100%; box-sizing: border-box; }
 .profile-header .report-box { margin-top: 0.5rem; }
+
+/* 27일차: 연결 화면, 프로필 수, 사진 확대 */
+.tabs {
+  display: flex;
+  gap: 1.25rem;
+  margin: 1rem 0;
+  border-bottom: 1px solid var(--main-color);
+}
+.tabs a {
+  padding: 0.5rem 0;
+  text-decoration: none;
+  color: var(--text-gray);
+}
+.tabs a.active {
+  color: var(--header-text);
+  font-weight: bold;
+  border-bottom: 2px solid var(--accent);
+}
+.person-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.person-row .person-card { flex: 1; min-width: 0; }
+.person-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.profile-stats {
+  display: flex;
+  gap: 1rem;
+  margin: 0.25rem 0 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-gray);
+}
+.profile-stats a { color: var(--link-color); }
+.avatar.zoomable { cursor: zoom-in; }
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+}
+.lightbox img {
+  width: min(90vw, 80vh, 512px);
+  height: min(90vw, 80vh, 512px);
+  object-fit: cover;
+  border-radius: 50%;
+}
+.lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  font-size: 1.8rem;
+  line-height: 1;
+  background: transparent;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
