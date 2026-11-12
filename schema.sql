@@ -514,3 +514,68 @@ alter table profiles add column if not exists bio text not null default '';
 
 alter table profiles drop constraint if exists profiles_bio_length;
 alter table profiles add constraint profiles_bio_length check (char_length(bio) <= 100);
+
+-- ============================================
+-- 2026-11-13: 26일차 프로필 사진
+-- ============================================
+
+-- 1. profiles: 사진 경로 (본인 폴더 안의 파일만 허용)
+alter table profiles add column if not exists avatar_path text;
+
+alter table profiles drop constraint if exists profiles_avatar_path_owner;
+alter table profiles
+  add constraint profiles_avatar_path_owner
+  check (avatar_path is null or avatar_path like id::text || '/%');
+
+-- 2. 공개 저장소 avatars (파일당 512KB, 이미지 형식만)
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('avatars', 'avatars', true, 524288, array['image/jpeg', 'image/png', 'image/webp'])
+on conflict (id) do nothing;
+
+drop policy if exists "anyone can view avatars" on storage.objects;
+create policy "anyone can view avatars"
+  on storage.objects for select
+  using (bucket_id = 'avatars');
+
+drop policy if exists "users can upload own avatar" on storage.objects;
+create policy "users can upload own avatar"
+  on storage.objects for insert to authenticated
+  with check (
+    bucket_id = 'avatars'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+drop policy if exists "users can delete own avatar" on storage.objects;
+create policy "users can delete own avatar"
+  on storage.objects for delete to authenticated
+  using (
+    bucket_id = 'avatars'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+-- ============================================
+-- 2026-11-13: 26일차 사용자(프로필) 신고
+-- ============================================
+alter table reports
+  add column if not exists target_user uuid references profiles(id) on delete cascade;
+
+alter table reports alter column target_id drop not null;
+
+alter table reports drop constraint if exists reports_target_type_check;
+alter table reports
+  add constraint reports_target_type_check
+  check (target_type in ('post', 'comment', 'profile'));
+
+alter table reports drop constraint if exists reports_target_check;
+alter table reports
+  add constraint reports_target_check
+  check (
+    (target_type in ('post', 'comment') and target_id is not null and target_user is null)
+    or
+    (target_type = 'profile' and target_user is not null and target_id is null
+       and target_user <> reporter_id)
+  );
+
+create unique index if not exists reports_profile_unique
+  on reports (reporter_id, target_user)
+  where target_type = 'profile';

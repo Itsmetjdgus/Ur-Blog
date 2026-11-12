@@ -5,7 +5,7 @@ const I18N = {
     'profile.no_bio': '아직 소개글이 없습니다.',
     'profile.edit': '프로필 수정',
     'profile.bio_label': '한 줄 소개',
-    'profile.bio_help': '소개글은 비공개 계정이어도 모든 사람에게 보입니다. 개인정보나 연락처는 쓰지 마세요.',
+    'profile.bio_help': '프로필 사진과 소개글은 비공개 계정이어도 모든 사람에게 보입니다. 개인정보나 연락처는 쓰지 마세요.',
     'profile.save': '저장',
     'profile.cancel': '취소',
     'profile.saved': '저장했습니다.',
@@ -20,14 +20,20 @@ const I18N = {
     'people.none': '검색 결과가 없습니다.',
     'people.error': '검색하지 못했습니다. 잠시 후 다시 시도해 주세요.',
     'people.you': '나',
-    'people.more_hint': '결과가 많아 일부만 보여 드립니다. 닉네임을 더 자세히 입력해 보세요.'
+    'people.more_hint': '결과가 많아 일부만 보여 드립니다. 닉네임을 더 자세히 입력해 보세요.',
+        'profile.photo_label': '프로필 사진',
+    'profile.photo_remove': '사진 삭제',
+    'profile.photo_type': 'JPG, PNG, WEBP 이미지만 올릴 수 있습니다.',
+    'profile.photo_size': '이미지는 15MB 이하여야 합니다.',
+    'profile.photo_failed': '사진을 처리하거나 올리지 못했습니다. 다른 사진으로 시도해 주세요.',
+    'profile.saving': '저장 중...'
   },
   en: {
     'profile.posts_of': "{name}'s posts",
     'profile.no_bio': 'No bio yet.',
     'profile.edit': 'Edit profile',
     'profile.bio_label': 'Bio',
-    'profile.bio_help': 'Your bio is visible to everyone, even if your account is private. Do not include personal details or contact info.',
+    'profile.bio_help': 'Your profile photo and bio are visible to everyone, even if your account is private. Do not include personal details or contact info.',
     'profile.save': 'Save',
     'profile.cancel': 'Cancel',
     'profile.saved': 'Saved.',
@@ -42,7 +48,14 @@ const I18N = {
     'people.none': 'No users found.',
     'people.error': 'Could not search. Please try again in a moment.',
     'people.you': 'You',
-    'people.more_hint': 'Showing only some of the results. Try a more specific nickname.'
+    'people.more_hint': 'Showing only some of the results. Try a more specific nickname.',
+        'profile.photo_label': 'Profile photo',
+    'profile.photo_remove': 'Remove photo',
+    'profile.photo_type': 'Only JPG, PNG, and WEBP images are allowed.',
+    'profile.photo_size': 'Image must be 15MB or smaller.',
+    'profile.photo_failed': 'Could not process or upload the photo. Try another one.',
+    'profile.saving': 'Saving...'
+
   }
 };
 

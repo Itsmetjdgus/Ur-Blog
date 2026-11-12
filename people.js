@@ -33,7 +33,7 @@
 
   const { data, error } = await db
     .from('profiles')
-    .select('id, nickname, bio')
+        .select('id, nickname, bio, avatar_path')
     .ilike('nickname', '%' + keyword + '%')
     .limit(50);
 
@@ -62,9 +62,7 @@
     card.className = 'person-card';
     card.href = 'author.html?id=' + encodeURIComponent(person.id);
 
-    const avatar = document.createElement('div');
-    avatar.className = 'avatar-sm';
-    avatar.textContent = person.nickname.charAt(0).toUpperCase();
+       const avatar = createAvatar(person.nickname, person.avatar_path, true);
 
     const info = document.createElement('div');
 
