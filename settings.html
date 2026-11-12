@@ -16,36 +16,95 @@
         <nav id="main-nav"></nav>
     </header>
 
-        <main>
-        <h2>Settings</h2>
+    <main>
+        <h2 data-i18n="settings.title"></h2>
+        <p id="settings-error" class="state-message"></p>
 
-        <section class="post">
-            <h3>Account privacy</h3>
-            <p id="privacy-status" class="state-message">Loading...</p>
+        <div class="settings-layout">
+            <nav class="settings-menu" aria-label="Settings">
+                <a href="settings.html?tab=account" data-tab="account" data-i18n="settings.menu_account"></a>
+                <a href="settings.html?tab=privacy" data-tab="privacy" data-i18n="settings.menu_privacy"></a>
+                <a href="settings.html?tab=security" data-tab="security" data-i18n="settings.menu_security"></a>
+                <a href="settings.html?tab=about" data-tab="about" data-i18n="settings.menu_about"></a>
+            </nav>
 
-            <div id="privacy-options" hidden>
-                <label class="option">
-                    <input type="radio" name="privacy" value="public">
-                    <span><strong>Public</strong>Anyone can see your posts. People can follow you right away.</span>
-                </label>
+            <div class="settings-content">
+                <!-- 계정 -->
+                <section id="tab-account" class="post settings-panel" hidden>
+                    <h3 data-i18n="settings.nickname_title"></h3>
+                    <p class="state-message" data-i18n="settings.nickname_help"></p>
+                    <form class="write-form" id="nickname-form">
+                        <label for="nickname" data-i18n="settings.nickname_title"></label>
+                        <input type="text" id="nickname" maxlength="20" autocomplete="off">
+                        <button type="submit" id="nickname-btn" data-i18n="settings.nickname_save"></button>
+                        <p id="nickname-message" class="form-message"></p>
+                    </form>
+                </section>
 
-                <label class="option">
-                    <input type="radio" name="privacy" value="private">
-                    <span><strong>Private</strong>Only people you approve can see your posts. Follow requests need your approval.<br><small>Note: photos are not fully protected yet. Please do not attach photos while your account is private.</small></span>
-                </label>
+                <!-- 개인정보 보호 -->
+                <section id="tab-privacy" class="post settings-panel" hidden>
+                    <h3 data-i18n="settings.privacy_title"></h3>
+                    <p id="privacy-status" class="state-message"></p>
 
-                <button type="button" id="privacy-save">Save</button>
-                <p id="privacy-message" class="form-message"></p>
+                    <div id="privacy-options">
+                        <label class="option">
+                            <input type="radio" name="privacy" value="public">
+                            <span>
+                                <strong data-i18n="settings.public"></strong>
+                                <span data-i18n="settings.public_desc"></span>
+                            </span>
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="privacy" value="private">
+                            <span>
+                                <strong data-i18n="settings.private"></strong>
+                                <span data-i18n="settings.private_desc"></span><br>
+                                <small data-i18n="settings.private_note"></small>
+                            </span>
+                        </label>
+
+                        <button type="button" id="privacy-save" data-i18n="settings.save"></button>
+                        <p id="privacy-message" class="form-message"></p>
+                    </div>
+                </section>
+
+                <!-- 보안 -->
+                <section id="tab-security" class="post settings-panel" hidden>
+                    <h3 data-i18n="settings.delete_title"></h3>
+                    <p data-i18n="settings.delete_desc"></p>
+                    <form class="write-form" id="delete-form">
+                        <label for="delete-password" data-i18n="settings.delete_password"></label>
+                        <input type="password" id="delete-password" autocomplete="current-password">
+                        <label for="delete-confirm" data-i18n="settings.delete_type"></label>
+                        <input type="text" id="delete-confirm" autocomplete="off">
+                        <button type="submit" id="delete-account-btn" class="danger-btn" data-i18n="settings.delete_btn"></button>
+                        <p id="delete-message" class="form-message"></p>
+                    </form>
+                </section>
+
+                <!-- 정보 -->
+                <section id="tab-about" class="post settings-panel" hidden>
+                    <h3 data-i18n="settings.menu_about"></h3>
+                    <ul class="about-list">
+                        <li><a href="terms.html" data-i18n="settings.about_terms"></a></li>
+                        <li><a href="privacy.html" data-i18n="settings.about_privacy"></a></li>
+                        <li><a href="help.html" data-i18n="settings.about_help"></a></li>
+                        <li><a href="report.html" data-i18n="settings.about_report"></a></li>
+                        <li><span data-i18n="settings.about_contact"></span>: Tidnote.contact@gmail.com</li>
+                    </ul>
+                </section>
             </div>
-        </section>
+        </div>
     </main>
 
     <footer>
         <p>Tidnote</p>
     </footer>
 
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
+    <script src="i18n.js"></script>
     <script src="nav.js"></script>
     <script src="settings.js"></script>
 </body>

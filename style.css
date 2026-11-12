@@ -715,3 +715,52 @@ header {
   border: none;
   cursor: pointer;
 }
+
+/* 28일차: 설정(메뉴 + 내용) */
+.settings-layout {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-top: 1rem;
+}
+.settings-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 180px;
+  flex-shrink: 0;
+}
+.settings-menu a {
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  color: var(--text-gray);
+  text-decoration: none;
+}
+.settings-menu a:hover { background: var(--main-color); }
+.settings-menu a.active {
+  background: var(--main-color);
+  color: var(--header-text);
+  font-weight: bold;
+}
+.settings-content { flex: 1; min-width: 0; }
+.settings-panel h3 { margin-top: 0; }
+.about-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.about-list a { color: var(--link-color); }
+
+@media (max-width: 600px) {
+  .settings-layout { flex-direction: column; gap: 0.75rem; }
+  .settings-menu {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 0.25rem;
+  }
+  .settings-menu a { white-space: nowrap; }
+}

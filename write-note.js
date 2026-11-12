@@ -21,7 +21,7 @@
   );
 
   const changeLink = document.createElement('a');
-  changeLink.href = 'settings.html';
+  changeLink.href = 'settings.html?tab=privacy';
   changeLink.textContent = 'Change in Settings.';
   privacyNote.append(changeLink);
 })();

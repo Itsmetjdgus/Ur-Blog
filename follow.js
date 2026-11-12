@@ -143,7 +143,7 @@
       note.className = 'follow-note';
       note.append(profile.is_private ? 'Your account is private. ' : 'Your account is public. ');
       const link = document.createElement('a');
-      link.href = 'settings.html';
+      link.href = 'settings.html?tab=privacy';
       link.textContent = 'Change in Settings.';
       note.append(link);
       row.append(note);
