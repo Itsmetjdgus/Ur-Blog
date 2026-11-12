@@ -47,12 +47,18 @@ function createReportControl(targetType, targetId) {
     message.className = 'form-message';
     message.textContent = '';
 
-    const { error } = await db.from('reports').insert({
+          const row = {
       target_type: targetType,
-      target_id: targetId,
       reason: select.value,
       details: details.value.trim() || null,
-    });
+    };
+    if (targetType === 'profile') {
+      row.target_user = targetId;
+    } else {
+      row.target_id = targetId;
+    }
+
+    const { error } = await db.from('reports').insert(row);
 
     submit.disabled = false;
 

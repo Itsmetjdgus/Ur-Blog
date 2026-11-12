@@ -114,6 +114,18 @@
         }
       }
 
+            const { data: avatarFiles } = await db.storage.from('avatars').list(session.user.id);
+      if (avatarFiles && avatarFiles.length > 0) {
+        const { error: avatarRemoveError } = await db.storage
+          .from('avatars')
+          .remove(avatarFiles.map((f) => session.user.id + '/' + f.name));
+        if (avatarRemoveError) {
+          deleteMessage.textContent = 'Failed to delete images.';
+          deleteBtn.disabled = false;
+          return;
+        }
+      }
+
       const { error: rpcError } = await db.rpc('delete_my_account');
       if (rpcError) {
         deleteMessage.textContent = 'Failed to delete the account.';
