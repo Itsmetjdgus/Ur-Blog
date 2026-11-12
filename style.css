@@ -596,3 +596,36 @@ header {
 .profile-bio { margin: 0 0 0.5rem; color: var(--text-gray); }
 .posts-heading { margin: 1rem 0; }
 #bio-input { width: 100%; box-sizing: border-box; }
+
+/* 25일차: 사람 검색 */
+.person-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.person-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+.person-card:hover { background: var(--main-color); }
+.avatar-sm {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--header-text);
+  color: var(--main-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+.person-name { margin: 0; font-weight: bold; }
+.person-bio { margin: 0; color: var(--text-gray); font-size: 0.9rem; }

@@ -8,6 +8,7 @@ async function renderNav() {
   const links = [
     { text: 'Home', href: 'index.html' },
     { text: 'Posts', href: 'blog.html' },
+    { text: 'People', href: 'people.html' },
   ];
 
    if (loggedIn) {
