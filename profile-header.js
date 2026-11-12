@@ -18,13 +18,41 @@
   const me = userData && userData.user ? userData.user.id : null;
   const isMine = me === profile.id;
 
+    // 팔로워 수(누구나 볼 수 있음). 팔로잉 수는 본인에게만 오고 타인에게는 null.
+  // 내 프로필이면 받은 요청 수도 읽는다.
+  let counts = { followers: 0, following: null };
+  const { data: countData } = await db.rpc('get_follow_counts', { uid: profile.id });
+  if (countData && countData[0]) {
+    counts = {
+      followers: Number(countData[0].followers),
+      following: countData[0].following === null ? null : Number(countData[0].following),
+    };
+  }
+
+  let pendingCount = 0;
+  if (isMine) {
+    const { count } = await db
+      .from('follows')
+      .select('follower_id', { count: 'exact', head: true })
+      .eq('following_id', me)
+      .eq('status', 'pending');
+    pendingCount = count || 0;
+  }
+
+  function makeStat(key, value, href) {
+    const el = document.createElement(href ? 'a' : 'span');
+    if (href) el.href = href;
+    el.textContent = t(key, { n: value });
+    return el;
+  }
+
   const MAX_INPUT_SIZE = 15 * 1024 * 1024;
   const TYPES = { 'image/jpeg': true, 'image/png': true, 'image/webp': true };
 
   function render() {
     box.textContent = '';
 
-    const avatar = createAvatar(profile.nickname, profile.avatar_path, false);
+        const avatar = createAvatar(profile.nickname, profile.avatar_path, false, true);
 
     const info = document.createElement('div');
     info.className = 'profile-info';
@@ -39,6 +67,19 @@
 
     info.appendChild(name);
     info.appendChild(bio);
+
+        const stats = document.createElement('div');
+    stats.className = 'profile-stats';
+    stats.append(
+      makeStat('profile.followers', counts.followers, isMine ? 'connections.html?tab=followers' : null)
+    );
+    if (isMine) {
+      stats.append(makeStat('profile.following', counts.following || 0, 'connections.html?tab=following'));
+    }
+    if (isMine && pendingCount > 0) {
+      stats.append(makeStat('profile.requests', pendingCount, 'connections.html?tab=requests'));
+    }
+    info.appendChild(stats);
 
     if (isMine) {
       const editBtn = document.createElement('button');
@@ -151,7 +192,7 @@
       if (newFile) {
         let blob = null;
         try {
-          blob = await resizeSquare(newFile, 256, 0.85);
+             blob = await resizeSquare(newFile, 512, 0.85);
         } catch (e) {
           blob = null;
         }
