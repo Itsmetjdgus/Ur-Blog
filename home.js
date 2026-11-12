@@ -7,5 +7,10 @@
   if (data.session) {
     cta.href = 'write.html';
     cta.textContent = 'Write a post';
+  } else {
+    cta.addEventListener('click', function (event) {
+      event.preventDefault();
+      openSignup();
+    });
   }
 })();

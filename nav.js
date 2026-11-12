@@ -1,3 +1,25 @@
+// 필요할 때만 스크립트를 불러온다
+function loadScript(src) {
+  return new Promise(function (resolve, reject) {
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.append(s);
+  });
+}
+
+// 회원가입 창 열기: 번역 도우미와 가입 창 스크립트가 없으면 불러온 뒤 연다
+async function openSignup() {
+  try {
+    if (typeof t !== 'function') await loadScript('i18n.js');
+    if (typeof showSignupModal !== 'function') await loadScript('signup-modal.js');
+    showSignupModal();
+  } catch (e) {
+    window.location.href = 'login.html';
+  }
+}
+
 async function renderNav() {
   const nav = document.getElementById('main-nav');
   if (!nav) return;
@@ -27,6 +49,7 @@ async function renderNav() {
     links.push({ text: 'Settings', href: 'settings.html' });
   } else {
     links.push({ text: 'Login', href: 'login.html' });
+    links.push({ text: 'Sign up', href: 'login.html', onClick: openSignup });
   }
 
   nav.innerHTML = '';
@@ -35,6 +58,13 @@ async function renderNav() {
     const a = document.createElement('a');
     a.textContent = item.text;
     a.href = item.href;
+    if (item.onClick) {
+      a.classList.add('nav-cta');
+      a.addEventListener('click', (event) => {
+        event.preventDefault();
+        item.onClick();
+      });
+    }
     nav.append(a);
   });
 

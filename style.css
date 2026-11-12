@@ -764,3 +764,86 @@ header {
   }
   .settings-menu a { white-space: nowrap; }
 }
+
+/* 28일차: 회원가입 창(모달), 상단 Sign up 버튼 */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow-y: auto;
+  background: rgba(31, 53, 82, 0.55);
+  backdrop-filter: blur(3px);
+  animation: modal-fade 0.18s ease-out;
+}
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 28px 24px 24px;
+  background: var(--bg-color);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+.modal-logo {
+  display: block;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 8px;
+  border-radius: 12px;
+}
+.modal h2 { margin: 0.25rem 0; }
+.modal-sub { margin: 0 0 1rem; color: var(--text-gray); }
+.modal .write-form {
+  padding: 0;
+  background: transparent;
+  text-align: left;
+}
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 40px;
+  height: 40px;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--text-gray);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.modal-foot {
+  margin: 1rem 0 0;
+  font-size: 0.9rem;
+  color: var(--text-gray);
+}
+.modal-foot a { color: var(--link-color); }
+.nav-cta {
+  padding: 2px 14px;
+  border-radius: 999px;
+  background: var(--header-text);
+  color: var(--main-color) !important;
+  text-decoration: none;
+}
+.link-button {
+  padding: 0;
+  font: inherit;
+  color: var(--link-color);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+@keyframes modal-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .modal-overlay { animation: none; }
+}
