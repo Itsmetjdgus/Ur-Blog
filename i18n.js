@@ -11,7 +11,16 @@ const I18N = {
     'profile.saved': '저장했습니다.',
     'profile.save_failed': '저장하지 못했습니다. 잠시 후 다시 시도해 주세요.',
     'profile.not_found': '사용자를 찾을 수 없습니다.',
-    'profile.counter': '{n}/100'
+    'profile.counter': '{n}/100',
+        'people.title': '사람 찾기',
+    'people.placeholder': '닉네임 검색',
+    'people.search': '검색',
+    'people.prompt': '찾고 싶은 사람의 닉네임을 입력하세요.',
+    'people.too_short': '두 글자 이상 입력해 주세요.',
+    'people.none': '검색 결과가 없습니다.',
+    'people.error': '검색하지 못했습니다. 잠시 후 다시 시도해 주세요.',
+    'people.you': '나',
+    'people.more_hint': '결과가 많아 일부만 보여 드립니다. 닉네임을 더 자세히 입력해 보세요.'
   },
   en: {
     'profile.posts_of': "{name}'s posts",
@@ -24,7 +33,16 @@ const I18N = {
     'profile.saved': 'Saved.',
     'profile.save_failed': 'Could not save. Please try again in a moment.',
     'profile.not_found': 'User not found.',
-    'profile.counter': '{n}/100'
+    'profile.counter': '{n}/100',
+        'people.title': 'Find people',
+    'people.placeholder': 'Search by nickname',
+    'people.search': 'Search',
+    'people.prompt': 'Enter a nickname to find someone.',
+    'people.too_short': 'Please enter at least 2 characters.',
+    'people.none': 'No users found.',
+    'people.error': 'Could not search. Please try again in a moment.',
+    'people.you': 'You',
+    'people.more_hint': 'Showing only some of the results. Try a more specific nickname.'
   }
 };
 

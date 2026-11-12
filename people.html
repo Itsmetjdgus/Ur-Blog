@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f3e7cc">
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="favicon-64.png" type="image/png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <title>Tidnote</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Tidnote</h1>
+        <nav id="main-nav"></nav>
+    </header>
+
+    <main>
+        <h2 data-i18n="people.title"></h2>
+
+        <form class="search-form" action="people.html" method="get">
+            <input type="search" id="people-input" name="q" maxlength="20">
+            <button type="submit" data-i18n="people.search"></button>
+        </form>
+
+        <div id="people-list" class="person-list"></div>
+    </main>
+
+    <footer>
+        <p>Tidnote</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="i18n.js"></script>
+    <script src="nav.js"></script>
+    <script src="people.js"></script>
+</body>
+</html>
